@@ -20,9 +20,9 @@ pipeline {
                 cleanWs()
             }
         }
-        stage('Checkout from Git') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/its-bijaya/a-reddit-clone.git'
+                git url: 'https://github.com/its-bijaya/a-reddit-clone.git', branch: 'main'
             }
         }
         stage("SonarQube Analysis") {
