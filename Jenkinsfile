@@ -6,12 +6,11 @@ pipeline {
     }
     environment {
         SCANNER_HOME = tool 'sonar-scanner'
-        APP_NAME = "reddit-clone-pipeline"
+        APP_NAME = "reddit-app"
         RELEASE = "1.0.0"
         DOCKER_USER = "itsbijaya"
         IMAGE_NAME = "${DOCKER_USER}/${APP_NAME}"
         IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-        DOCKER_PASS = credentials("dockerhub-authentication-key") // Use credentials management
     }
     stages {
         stage('Clean Workspace') {
@@ -54,10 +53,9 @@ pipeline {
         stage("Build & Push Docker Image") {
             steps {
                 script {
-                    docker.withRegistry('', DOCKER_PASS) {
-                        def dockerImage = docker.build "${IMAGE_NAME}"
-                        dockerImage.push("${IMAGE_TAG}")
-                        dockerImage.push('latest')
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credential') {
+                        docker.image('itsbijaya/reddit-app').push('latest')
+                    }
                     }
                 }
             }
