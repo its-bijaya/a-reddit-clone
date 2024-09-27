@@ -54,8 +54,8 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credential') {
-                        docker.image('itsbijaya/reddit-app').push('latest')
-                    }
+                        def dockerImage = docker.build("${IMAGE_NAME}")
+                        dockerImage.push('latest')
                     }
                 }
             }
